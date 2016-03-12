@@ -8,9 +8,21 @@ html {
     height: 100%;
 }
 
+#views {
+    position: absolute;
+    left: 32px;
+    bottom: 0;
+    top: 0;
+}
+
 #leftBar {
+    position: absolute;
     width: 32px;
+    left: 0;
+    bottom: 0;
+    top: 0;
     background-color: aqua;
+    height: 100%;
 }
 
 #leftBar > .buttonElement {
@@ -38,7 +50,7 @@ html {
     bottom: 0;
     left: 0;
     right: 0;
-    transition: top 0.15s ease-out;
+    transition: top 0.10s ease-out;
 }
 
 .view > .viewParent > .viewContainer > .webview {
@@ -53,7 +65,7 @@ html {
     height:30px;
     width: 100%;
     background-color: rgba(239, 239, 239, 1);
-    transition: top 0.15s ease-out;
+    transition: top 0.10s ease-out;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.left {

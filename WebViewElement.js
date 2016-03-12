@@ -1,3 +1,5 @@
+"use strict";
+
 function WebViewElement(src, id) {
     var _this = this;
 
@@ -79,9 +81,11 @@ function WebViewElement(src, id) {
             "</div>" +
             "</div>");
     }
-
-    return this.domElement;
 }
+
+WebViewElement.prototype.getHtml = function() {
+    return this.domElement;
+};
 
 WebViewElement.prototype.goForward = function() {
     this.webViewElement.forward();
