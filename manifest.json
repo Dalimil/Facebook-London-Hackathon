@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 
-	"name": "M",
-	"description": "This extension allows you to have multiple browser tabs easily visible.",
+	"name": "Mozaic",
+	"description": "TODO: description",
 	"version": "0.1",
 
 	"permissions": [
@@ -11,7 +11,7 @@
 
 	"app": {
 		"background": { /* Run in the background */
-			"scripts": ["jquery.js", "background.js"]
+			"scripts": ["background.js"]
 		}
 	}
 }

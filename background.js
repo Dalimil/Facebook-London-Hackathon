@@ -3,7 +3,7 @@
 // width and height of the user's screen, in pixels, minus interface features
 const WIDTH_WINDOW = screen.availWidth;
 const HEIGHT_WINDOW = screen.availHeight;
-console.log("Window dim: "+WIDTH_WINDOW +"x"+HEIGHT_WINDOW);
+// console.log("Window dim: "+WIDTH_WINDOW +"x"+HEIGHT_WINDOW);
 
 var contentWindow = null;
 
@@ -18,10 +18,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
     },
     frame: "chrome"
   }, function(createdWindow) {
-  		WIDTH = createdWindow.innerBounds.width;
-  		HEIGHT = createdWindow.innerBounds.height;
   		contentWindow = createdWindow.contentWindow;
-  		console.log("Content dim: "+WIDTH+"x"+HEIGHT);
   	});
 });
 
