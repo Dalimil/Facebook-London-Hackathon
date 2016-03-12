@@ -1,6 +1,9 @@
 # Facebook London Hackathon (London, 12-13th March 2016)
 Facebook London Hackathon 2016
 
+### UPDATE:
+Chrome App (not extension)
+
 ### Notes
 
 Cannot use iframes (disallowed by indiv. sites, CORS) - Create a Chrome extension that will control browser windows

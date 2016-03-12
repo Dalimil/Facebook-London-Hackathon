@@ -9,7 +9,7 @@ var dockedWindows = [];
 
 /** When launched */
 chrome.app.runtime.onLaunched.addListener(function() {
-  chrome.app.window.create('window.html', {
+  chrome.app.window.create('main.html', {
     'outerBounds': {
       'width': WIDTH,
       'height': HEIGHT
@@ -17,32 +17,13 @@ chrome.app.runtime.onLaunched.addListener(function() {
   });
 });
 
-// Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.browserAction.setBadgeText({"text": "Hi"});
-	chrome.browserAction.setBadgeBackgroundColor({"color": [0, 0, 255, 255]});
-
-	sendTestMessage();
-	// Dock current
-	chrome.windows.getCurrent(function(window) {
-		dock(window.id);
-	});
-});
-
-/** Send a test message to the active tab */
-function sendTestMessage(){ 
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		var activeTab = tabs[0];
-		chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-	});
-}
 
 /** Dock the current browser window */
 function dock(windowId){
 	/* windowId = integer ID of the removed window. */
 	params = getNewWindowParams();
 	params["state"] = "normal";
-	chrome.windows.update(windowId, params);
+	// chrome.windows.update(windowId, params);
 	console.log("updated: " + windowId);
 	// TODO: add windowId to internal representation
 }
@@ -53,17 +34,8 @@ function getNewWindowParams(){
 }
 
 /** Fired when a window is removed (closed). */
-chrome.windows.onRemoved.addListener(function(windowId) { 
+function windowRemoved(windowId) { 
 	/* windowId = integer ID of the removed window. */
 	// TODO: remove from internal representation
-});
+}
 
-// TODO
-chrome.runtime.onMessage.addListener(
-	function(request, sender, sendResponse) {
-		if( request.message === "ack" ) {
-			// use request object data here
-			console.log("got response");
-		}
-	}
-);
