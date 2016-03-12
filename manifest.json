@@ -1,0 +1,32 @@
+{
+	"manifest_version": 2,
+
+	"name": "Dashboardise",
+	"description": "This extension allows you to have multiple browser windows easily visible.",
+	"version": "0.1",
+
+	"browser_action": {
+		"default_icon": "images/icon.png", /* 38x38 pixels, http://fa2png.io/ --> fa-th-large */
+		/* "default_popup": "popup.html", doesn't work with capturing browserAction.onClicked at the same time*/
+		"default_title": "Dock this window"
+	},
+
+	"permissions": [
+		"activeTab", "tabs"
+	],
+
+	"background": { /* Run in the background */
+		"scripts": ["jquery.js", "background.js"],
+		"persistent": true
+	},
+
+	"content_scripts": [{  /* Injected into the current page */
+			"matches": ["<all_urls>"],
+			"js": ["jquery.js", "content.js"]
+	}],
+
+	"chrome_url_overrides" : { /* Override new tab window */
+    "newtab": "intro.html"
+  }
+
+}
