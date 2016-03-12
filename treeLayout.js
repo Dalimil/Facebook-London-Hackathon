@@ -16,8 +16,8 @@ var getNewId = (function () {
 })();
 
 function initDimensions(){
-	WIDTH = $(document).width();
-	HEIGHT = $(document).height();
+	WIDTH = $("#views").width();
+	HEIGHT = $("#views").height();
 	console.log("Content dim: "+WIDTH +"x"+HEIGHT);
 }
 
