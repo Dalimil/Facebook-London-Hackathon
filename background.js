@@ -7,6 +7,16 @@ console.log("Available: "+WIDTH +"x"+HEIGHT);
 
 var dockedWindows = [];
 
+/** When launched */
+chrome.app.runtime.onLaunched.addListener(function() {
+  chrome.app.window.create('window.html', {
+    'outerBounds': {
+      'width': WIDTH,
+      'height': HEIGHT
+    }
+  });
+});
+
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function(tab) {
 	chrome.browserAction.setBadgeText({"text": "Hi"});
