@@ -2,39 +2,86 @@
 var WIDTH = null; 
 var HEIGHT = null; 
 
-var views = [];
+var views = {};
 
 $(document).ready(function(){
+	initDimensions();
+
+	addNewView(1, "https://facebook.com");
+});
+
+function initDimensions(){
 	WIDTH = $(document).width();
 	HEIGHT = $(document).height();
 	console.log("Content dim: "+WIDTH +"x"+HEIGHT);
-
-	addView(1, "https://facebook.com");
-});
+}
 
 /** Create a new view (open/add) */
-function addView(viewId, url){
-	params = getNewWindowParams();
-	var webview = $("<webview>", {id: viewId, src: url, style: params});
+function addNewView(viewId, url){
+	params = createNewWindowParams();
+	var webview = $("<webview>", {id: viewId, src: url});
+	$.each(params, function( key, value ) {
+		webview.css(key, value);
+	});
 	$("#views").append(webview);
-	// TODO: add windowId to internal representation
+	views[viewId] = params;
+	return params; // debug
 }
 
-function updateView(viewId){
-	//
+function createNewWindowParams(){
+	var mxArea = -1;
+	var id = null;
+	$.each(views, function( key, value ) {
+		var area = value["height"]*value["width"];
+		if(area > mxArea){
+			area = mxArea;
+			id = key;
+		}
+	});
+
+	if(id == null) {
+		return {"left": 0, "top": 0, "width": WIDTH, "height": HEIGHT};
+	} else {
+		var w = views[id].width;
+		var h = views[id].height;
+		if(w/h > WIDTH/HEIGHT){
+			// vertical split
+			updateView(id, {"width": w/2});
+			return {"left": views[id].left + w/2, "top": views[id].top, "width": w/2, "height": h};
+		}else{
+			//horizontal split
+			updateView(id, {"height": h/2});
+			return {"left": views[id].left, "top": views[id].top + h/2, "width": w, "height": h/2};
+		}
+	}
 }
 
-/** Called when a view is removed (closed). */
+function updateView(viewId, params){
+	var webview = $("#"+viewId);
+	$.each(params, function( key, value ) {
+		webview.css(key, value);
+	});
+}
+
+/** Called when a view should be removed (closed). */
 function removeView(viewId) { 
-	// TODO: remove from internal representation
+	$("#"+viewId).remove();
+	delete views[viewId];
 }
 
-function getNewWindowParams(){
-	// TODO
-	return {"left": 0, "top": 0, "width": 600, "height": 300};
-}
-
-/** Used by background.js */
+/** Used by background.js - resets all windows to default sizes */
 function resetLayout(){
-	//
+	initDimensions();
+	var len = Object.keys(viwes).length;
+
+}
+
+function clearAll(){
+	$.each(views, function( key, value ) {
+		removeView(key);
+	});
+}
+
+function debug(){
+	console.log(views);
 }
