@@ -88,7 +88,7 @@ function initRootView(url){
 /** Create a new view (open/add), 
   * viewId is the id of an existing view that should be split in two 
   */
-function addNewView(viewId, url, horizontal){
+function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
 	}
@@ -107,6 +107,12 @@ function addNewView(viewId, url, horizontal){
 	u.second["ref"] = new node();
 	var viewId = getNewId();
 	u.second["ref"].data = {"url":url, "id": viewId};
+
+	if(firstHalf){
+		var tmp = u.first["ref"];
+		u.first["ref"] = u.second["ref"];
+		u.second["ref"] = tmp;
+	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
 }
@@ -116,22 +122,7 @@ function createHtmlView(viewId, url){
 
 	var webViewHtml = webViewObject.getHtml();
 	$("#views").append(webViewHtml);
-	var webview = webViewObject.webViewElement;
-	var enterCount = 0;
-	webViewHtml.on('dragenter', function(ev){
-		console.log(ev);
-		if(enterCount == 0){addToWindow(webview);}
-		enterCount++;
-	});
-	webViewHtml.on('dragleave', function(ev){
-		console.log(ev);
-		enterCount--;
-		if(enterCount == 0)
-			resetWindow(webview);
-		if(enterCount < 0) enterCount = 0;
-	});
-	webViewHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "copy"; ev.preventDefault();});
-	webViewHtml.on('drop', function(ev){console.log(ev); drop(webview, ev); enterCount = 0;});
+	setupForDrop(webViewHtml, webViewObject);
 }
 
 function removeHtmlView(viewId){
@@ -209,6 +200,15 @@ function clearAll(){
 	$.each(viewDimsBckup, function( index, value ) {
 		removeView(value["id"]);
 	});
+}
+
+function saveLayoutToStorage(){
+	JSON.stringify(root);
+}
+
+function loadFromStorage(){
+	s = ""
+	root = JSON.parse(s);
 }
 
 function debug(){
