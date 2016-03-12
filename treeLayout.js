@@ -93,9 +93,8 @@ function addNewView(viewId, url, horizontal){
 }
 
 function createHtmlView(viewId, url){
-	var webview = $("<webview>", {id: viewId, src: url});
-	webview.css("position", "absolute");
-	$("#views").append(webview);
+	var webViewElementHtml = new WebViewElement(url, viewId);
+	$("#views").append(webViewElementHtml);
 }
 
 function removeHtmlView(viewId){
