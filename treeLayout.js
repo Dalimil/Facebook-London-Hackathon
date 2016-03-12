@@ -61,7 +61,21 @@ function getNodeFromId(u, viewId) {
 	return p1;
 }
 
-/* Like addNewView for the root  - only call this once during app init */
+function getParentNodeFromId(u, viewId) {
+	if(u.type == "leaf"){
+		return null;
+	}
+	if((u.first["ref"].type == "leaf" && u.first["ref"].data["id"] == viewId) ||
+		(u.second["ref"].type == "leaf" && u.second["ref"].data["id"] == viewId) ){
+		return u;
+	}
+	var p1 = getNodeFromId(u.first["ref"], viewId);
+	var p2 = getNodeFromId(u.second["ref"], viewId);
+	if(p1 == null) return p2;
+	return p1;
+}
+
+/* Like addNewView but for the root  */
 function initRootView(url){
 	root = new node();
 	var id = getNewId();
@@ -74,6 +88,10 @@ function initRootView(url){
   * viewId is the id of an existing view that should be split in two 
   */
 function addNewView(viewId, url, horizontal){
+	if(root == null){
+		initRootView(url);
+	}
+
 	var u = getNodeFromId(root, viewId);
 	if(u == null){
 		console.log("viewId not found");
@@ -134,7 +152,23 @@ function updateView(viewId, params){
 
 /** Called when a view should be removed (closed). */
 function removeView(viewId) { 
-	// TODO
+	if(root.type == "leaf" && root.data["id"] == viewId){
+		root = null;
+	} else {
+		var u = getParentNodeFromId(root, viewId);
+		if(u == null){
+			console.log("parent of viewId not found");
+			return;
+		}
+		console.log(u);
+		if(u.first["ref"].type == "leaf" && u.first["ref"].data["id"] == viewId){
+			u = u.second["ref"];
+		} else{
+			u = u.first["ref"];
+		}
+	}
+	removeHtmlView(viewId);
+	updateCoordinates();
 }
 
 /** Used by background.js - resets all windows to default sizes */
@@ -144,7 +178,10 @@ function resetLayout(){
 }
 
 function clearAll(){
-	// TODO
+	var viewDimsBckup = viewDims.slice();
+	$.each(viewDimsBckup, function( index, value ) {
+		removeView(value);
+	});
 }
 
 function debug(){
