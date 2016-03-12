@@ -87,7 +87,7 @@ function initRootView(url){
 /** Create a new view (open/add), 
   * viewId is the id of an existing view that should be split in two 
   */
-function addNewView(viewId, url, horizontal){
+function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
 	}
@@ -106,6 +106,12 @@ function addNewView(viewId, url, horizontal){
 	u.second["ref"] = new node();
 	var viewId = getNewId();
 	u.second["ref"].data = {"url":url, "id": viewId};
+
+	if(firstHalf){
+		var tmp = u.first["ref"];
+		u.first["ref"] = u.second["ref"];
+		u.second["ref"] = tmp;
+	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
 }
