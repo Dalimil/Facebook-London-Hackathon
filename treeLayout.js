@@ -122,8 +122,19 @@ function addNewView(viewId, url, horizontal, firstHalf){
 
 function createHtmlView(viewId, url){
 	var webViewObject = new WebViewElement(url, viewId);
+	webViewObject.webViewElement.addEventListener('contentload', function() {
+	  	// update our saved url
+	  	var id = $(webViewObject.domElement).attr("id");
+	  	var u = getNodeFromId(root, id);
+		if(u != null){
+			u.data["url"] = $(webViewObject.webViewElement).attr('src');
+			console.log(u.data["url"]);
+			saveLayoutToStorage();
+		}
+	});
 
 	var webViewHtml = webViewObject.getHtml();
+	
 	$("#views").append(webViewHtml);
 	setupForDrop(webViewHtml, webViewObject);
 }
