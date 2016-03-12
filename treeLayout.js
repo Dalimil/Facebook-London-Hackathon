@@ -122,20 +122,7 @@ function createHtmlView(viewId, url){
 
 	var webViewHtml = webViewObject.getHtml();
 	$("#views").append(webViewHtml);
-	var enterCount = 0;
-	webViewHtml.on('dragenter', function(ev){
-		if(enterCount == 0){addToWindow(webViewObject);}
-		enterCount++;
-	});
-	webViewHtml.on('dragleave', function(ev){
-		enterCount--;
-		if(enterCount == 0)
-			resetWindow(webViewObject);
-		if(enterCount < 0) enterCount = 0;
-	});
-	$(webViewObject.webViewElement).on('dragover', function(ev){ev.stopPropagation();});
-	webViewHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "move"; ev.preventDefault();});
-	webViewHtml.on('drop', function(ev){drop(webViewObject, ev); enterCount = 0;});
+	setupForDrop(webViewHtml, webViewObject);
 }
 
 function removeHtmlView(viewId){
