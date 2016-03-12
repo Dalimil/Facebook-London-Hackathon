@@ -32,7 +32,7 @@ function node() {
 $(document).ready(function(){
 	initDimensions();
 
-	initRootView("https://facebook.com");
+	loadFromStorage();
 });
 
 function getViewIdFromCoordinates(mouseX, mouseY){
@@ -125,6 +125,16 @@ function createHtmlView(viewId, url){
 	setupForDrop(webViewHtml, webViewObject);
 }
 
+function createAllHtmlViews(u){
+	if(u.type == "leaf") {
+		createHtmlView(u.data["id"], u.data["url"]);
+		return;
+	} else {
+		createAllHtmlViews(u.first["ref"]);
+		createAllHtmlViews(u.second["ref"]);
+	}
+}
+
 function removeHtmlView(viewId){
 	$("#"+viewId).remove();
 }
@@ -203,12 +213,22 @@ function clearAll(){
 }
 
 function saveLayoutToStorage(){
-	JSON.stringify(root);
+	chrome.runtime.sendMessage({"message": "save_storage", "data": JSON.stringify(root)});	
 }
 
 function loadFromStorage(){
-	s = ""
-	root = JSON.parse(s);
+	chrome.runtime.sendMessage({"message": "load_storage"});	
+}
+
+function loadFromStorageCallback(data){
+	console.log("Loaded: "+data);
+	if(data == null){
+		initRootView("https://google.com");
+	} else{
+		root = JSON.parse(data);
+		createAllHtmlViews(root);
+		updateCoordinates();
+	}
 }
 
 function debug(){

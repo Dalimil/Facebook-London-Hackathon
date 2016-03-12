@@ -5,6 +5,8 @@ const WIDTH_WINDOW = screen.availWidth;
 const HEIGHT_WINDOW = screen.availHeight;
 // console.log("Window dim: "+WIDTH_WINDOW +"x"+HEIGHT_WINDOW);
 
+var mainWindow = null;
+
 /** When launched */
 chrome.app.runtime.onLaunched.addListener(function() {
   chrome.app.window.create('main.html', {
@@ -16,6 +18,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
     },
     frame: "chrome"
   }, function(createdWindow) {
+      mainWindow = createdWindow;
       createdWindow.onBoundsChanged.addListener(function() {
         createdWindow.contentWindow.initDimensions();
         createdWindow.contentWindow.updateCoordinates();
@@ -23,3 +26,16 @@ chrome.app.runtime.onLaunched.addListener(function() {
   	});
 });
 
+
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if( request.message === "save_storage" ) {
+      chrome.storage.sync.set({'data': request.data});
+    } else if( request.message === 'load_storage' && mainWindow != null) {
+      chrome.storage.sync.get('data', function(data){
+        mainWindow.contentWindow.loadFromStorageCallback(data["data"]);
+      });
+    }
+  }
+);
