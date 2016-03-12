@@ -49,6 +49,25 @@ function WebViewElement(src, id) {
         }
     }
 
+    $(_this.domElement).draggable({
+        handle: _this.controls.dragHandleElement,
+        revert: true,
+        start: function(){
+            $(this).css({"z-index": "1000", "opacity": 0.5});
+        },
+        stop: function(){
+            $(this).css({"z-index": "0", "opacity": 1});
+        }
+    }).css("position", "absolute");
+
+    $(_this.domElement).droppable({
+        drop: function (event, ui) {
+
+            console.log(ui.draggable.attr('id'));
+        }
+
+    });
+
     function createHtml(src, id) {
         return $("<div class='view' id='" + id + "'>" +
             "<div class='viewParent'>" +
@@ -104,7 +123,7 @@ WebViewElement.prototype.reloadPage = function() {
 };
 
 WebViewElement.prototype.closePage = function() {
-    console.log("close");
+    removeView($(this.domElement).attr("id"));
 };
 
 WebViewElement.prototype.hideMenu = function() {

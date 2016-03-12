@@ -41,10 +41,18 @@ html {
 }
 
 
+
 .view > .viewParent {
+    position: relative;
     height:100%;
     width: 100%;
 }
+
+.view > .viewParent.isBeingDragged {
+    position: absolute;
+    opacity:0.5;
+}
+
 .view > .viewParent > .viewContainer {
     position: absolute;
     top: 0;
