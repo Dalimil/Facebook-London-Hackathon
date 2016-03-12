@@ -113,6 +113,22 @@ function addNewView(viewId, url, horizontal){
 function createHtmlView(viewId, url){
 	var webViewElementHtml = new WebViewElement(url, viewId);
 	$("#views").append(webViewElementHtml);
+	var webview = webViewElementHtml.webViewElement;
+	var enterCount = 0;
+	webViewElementHtml.on('dragenter', function(ev){
+		console.log(ev);
+		if(enterCount == 0){addToWindow(webview);}
+		enterCount++;
+	});
+	webViewElementHtml.on('dragleave', function(ev){
+		console.log(ev);
+		enterCount--;
+		if(enterCount == 0)
+			resetWindow(webview);
+		if(enterCount < 0) enterCount = 0;
+	});
+	webViewElementHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "copy"; ev.preventDefault();});
+	webViewElementHtml.on('drop', function(ev){console.log(ev); drop(webview, ev); enterCount = 0;});
 }
 
 function removeHtmlView(viewId){
