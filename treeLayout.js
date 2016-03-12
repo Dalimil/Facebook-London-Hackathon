@@ -83,6 +83,7 @@ function initRootView(url){
 	root.data = {"url": url, "id": id};
 	createHtmlView(id, url);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Create a new view (open/add), 
@@ -91,6 +92,7 @@ function initRootView(url){
 function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
+		return;
 	}
 
 	var u = getNodeFromId(root, viewId);
@@ -115,6 +117,7 @@ function addNewView(viewId, url, horizontal, firstHalf){
 	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 function createHtmlView(viewId, url){
@@ -197,12 +200,14 @@ function removeView(viewId) {
 	}
 	removeHtmlView(viewId);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Used by background.js - resets all windows to default sizes */
 function resetLayout(){
 	initDimensions();
 	// TODO
+	saveLayoutToStorage();
 }
 
 function clearAll(){
