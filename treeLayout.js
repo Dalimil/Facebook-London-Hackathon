@@ -115,22 +115,20 @@ function createHtmlView(viewId, url){
 
 	var webViewHtml = webViewObject.getHtml();
 	$("#views").append(webViewHtml);
-	var webview = webViewObject.webViewElement;
 	var enterCount = 0;
 	webViewHtml.on('dragenter', function(ev){
-		console.log(ev);
-		if(enterCount == 0){addToWindow(webview);}
+		if(enterCount == 0){addToWindow(webViewObject);}
 		enterCount++;
 	});
 	webViewHtml.on('dragleave', function(ev){
-		console.log(ev);
 		enterCount--;
 		if(enterCount == 0)
-			resetWindow(webview);
+			resetWindow(webViewObject);
 		if(enterCount < 0) enterCount = 0;
 	});
-	webViewHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "copy"; ev.preventDefault();});
-	webViewHtml.on('drop', function(ev){console.log(ev); drop(webview, ev); enterCount = 0;});
+	$(webViewObject.webViewElement).on('dragover', function(ev){ev.stopPropagation();});
+	webViewHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "move"; ev.preventDefault();});
+	webViewHtml.on('drop', function(ev){drop(webViewObject, ev); enterCount = 0;});
 }
 
 function removeHtmlView(viewId){
