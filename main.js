@@ -25,6 +25,7 @@ function addNewView(viewId, url){
 	$.each(params, function( key, value ) {
 		webview.css(key, value);
 	});
+	webview.css("position", "absolute");
 	$("#views").append(webview);
 	views[viewId] = params;
 	return params; // debug
@@ -46,7 +47,7 @@ function createNewWindowParams(){
 	} else {
 		var w = views[id].width;
 		var h = views[id].height;
-		if(w/h > WIDTH/HEIGHT){
+		if(w/h >= WIDTH/HEIGHT){
 			// vertical split
 			updateView(id, {"width": w/2});
 			return {"left": views[id].left + w/2, "top": views[id].top, "width": w/2, "height": h};
@@ -76,7 +77,7 @@ function removeView(viewId) {
 function resetLayout(){
 	initDimensions();
 	var len = Object.keys(viwes).length;
-
+	// TODO
 }
 
 function clearAll(){
