@@ -8,7 +8,71 @@ html {
     height: 100%;
 }
 
-webview {
-    width: auto;
-    height: auto;
+
+#leftBar {
+    width: 32px;
+    background-color: aqua;
+}
+
+#leftBar > .buttonElement {
+    background-color: blue;
+    height: 32px;
+    color: white;
+    line-height: 32px;
+    text-align: center;
+}
+
+.view {
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+.view > .viewParent {
+    height:100%;
+    width: 100%;
+}
+.view > .viewParent > .viewContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: top 0.15s ease-out;
+}
+
+.view > .viewParent > .viewContainer > .webview {
+    height:100%;
+    width:100%;
+    position: relative;
+}
+
+.view > .viewParent > .viewContainer > .viewControls {
+    position: relative;
+    top: -30px;
+    height:30px;
+    width: 100%;
+    background-color: rgba(239, 239, 239, 1);
+    transition: top 0.15s ease-out;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup.left {
+    float: left;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup.right {
+    float: right;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .button {
+    display: inline-block;
+}
+.view > .viewParent > .viewControls > .buttonsGroup .handle {
+    cursor: move;
+    display: inline-block;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .searchBar {
+    display: inline-block;
 }
