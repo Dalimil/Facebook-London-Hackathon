@@ -4,6 +4,9 @@ Facebook London Hackathon 2016
 ### UPDATE:
 Chrome App (not extension)
 
+#### Ideas to mention during presentation
+The thing that I am most proud is that we implemented the layout as a binary tree and all operations such as resizing, adding, deleting or moving windows are implemented as modifications of this tree and most updates are recursive traversals...
+
 ### Notes
 
 Cannot use iframes (disallowed by indiv. sites, CORS) - Create a Chrome extension that will control browser windows
