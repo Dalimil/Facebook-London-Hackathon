@@ -42,14 +42,10 @@ function drop(webview, ev) {
 		var px = ((x / width) - 0.5) * 2;
 		var py = ((y / height) - 0.5) * 2;
 		var id = domel.attr('id');
-		console.log(`px${px}, py${py}`);
-		console.log(id);
 		if(Math.abs(py) < Math.abs(px)) {
-			addNewView(id, url, false);
+			addNewView(id, url, false, px < 0.5);
 		} else {
-			addNewView(id, url, true);
+			addNewView(id, url, true, py < 0.5);
 		}
-		console.log(ev);
-		console.log(webview);
 	}
 }
