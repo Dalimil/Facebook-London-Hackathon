@@ -1,0 +1,14 @@
+/* Basic styling */
+body {
+    height: 100%;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+webview {
+    width: auto;
+    height: auto;
+}

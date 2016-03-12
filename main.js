@@ -1,3 +1,5 @@
+'use strict'
+
 /** Controls the main window contents */
 var WIDTH = null; 
 var HEIGHT = null; 
@@ -18,7 +20,7 @@ function initDimensions(){
 
 /** Create a new view (open/add) */
 function addNewView(viewId, url){
-	params = createNewWindowParams();
+	var params = createNewWindowParams();
 	var webview = $("<webview>", {id: viewId, src: url});
 	$.each(params, function( key, value ) {
 		webview.css(key, value);
@@ -59,6 +61,7 @@ function createNewWindowParams(){
 function updateView(viewId, params){
 	var webview = $("#"+viewId);
 	$.each(params, function( key, value ) {
+		views[viewId][key] = value;
 		webview.css(key, value);
 	});
 }
