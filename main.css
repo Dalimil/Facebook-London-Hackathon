@@ -13,6 +13,7 @@ html {
     left: 32px;
     bottom: 0;
     top: 0;
+    right: 0;
 }
 
 #leftBar {
@@ -59,7 +60,7 @@ html {
     position: relative;
 }
 
-.view > .viewParent > .viewContainer > .viewControls {
+.view > .viewParent > .viewControls {
     position: relative;
     top: -30px;
     height:30px;

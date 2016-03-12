@@ -16,8 +16,9 @@ var getNewId = (function () {
 })();
 
 function initDimensions(){
-	WIDTH = $(document).width();
-	HEIGHT = $(document).height();
+	var viewsRoot = $("#views");
+	WIDTH = viewsRoot.width();
+	HEIGHT = viewsRoot.height();
 	console.log("Content dim: "+WIDTH +"x"+HEIGHT);
 }
 
@@ -56,9 +57,9 @@ function getNodeFromId(u, viewId) {
 		return null;
 	}
 	var p1 = getNodeFromId(u.first["ref"], viewId);
+	if(p1 != null) return p1;
 	var p2 = getNodeFromId(u.second["ref"], viewId);
-	if(p1 == null) return p2;
-	return p1;
+	return p2;
 }
 
 function getParentNodeFromId(u, viewId) {
@@ -69,10 +70,10 @@ function getParentNodeFromId(u, viewId) {
 		(u.second["ref"].type == "leaf" && u.second["ref"].data["id"] == viewId) ){
 		return u;
 	}
-	var p1 = getNodeFromId(u.first["ref"], viewId);
-	var p2 = getNodeFromId(u.second["ref"], viewId);
-	if(p1 == null) return p2;
-	return p1;
+	var p1 = getParentNodeFromId(u.first["ref"], viewId);
+	if(p1 != null) return p1;
+	var p2 = getParentNodeFromId(u.second["ref"], viewId);
+	return p2;
 }
 
 /* Like addNewView but for the root  */
@@ -87,7 +88,7 @@ function initRootView(url){
 /** Create a new view (open/add), 
   * viewId is the id of an existing view that should be split in two 
   */
-function addNewView(viewId, url, horizontal){
+function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
 	}
@@ -106,6 +107,12 @@ function addNewView(viewId, url, horizontal){
 	u.second["ref"] = new node();
 	var viewId = getNewId();
 	u.second["ref"].data = {"url":url, "id": viewId};
+
+	if(firstHalf){
+		var tmp = u.first["ref"];
+		u.first["ref"] = u.second["ref"];
+		u.second["ref"] = tmp;
+	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
 }
@@ -137,7 +144,9 @@ function removeHtmlView(viewId){
 
 function updateCoordinates(){
 	viewDims = [];
-	console.log("ok " + root);
+	if(root == null){
+		return;
+	}
 	updateCoordinatesPrivate(root, 0, 0, WIDTH, HEIGHT);
 }
 
@@ -168,7 +177,7 @@ function updateView(viewId, params){
 
 /** Called when a view should be removed (closed). */
 function removeView(viewId) { 
-	if(root.type == "leaf" && root.data["id"] == viewId){
+	if(root.type == "leaf" && root.data["id"] == viewId){ // single view
 		root = null;
 	} else {
 		var u = getParentNodeFromId(root, viewId);
@@ -178,9 +187,15 @@ function removeView(viewId) {
 		}
 		console.log(u);
 		if(u.first["ref"].type == "leaf" && u.first["ref"].data["id"] == viewId){
-			u = u.second["ref"];
-		} else{
-			u = u.first["ref"];
+			u.type = u.second["ref"].type;
+			u.data = u.second["ref"].data;
+			u.first = u.second["ref"].first;
+			u.second = u.second["ref"].second;
+		} else{ // u = u.first["ref"]
+			u.type = u.first["ref"].type;
+			u.data = u.first["ref"].data;
+			u.second = u.first["ref"].second;
+			u.first = u.first["ref"].first;
 		}
 	}
 	removeHtmlView(viewId);
@@ -196,7 +211,7 @@ function resetLayout(){
 function clearAll(){
 	var viewDimsBckup = viewDims.slice();
 	$.each(viewDimsBckup, function( index, value ) {
-		removeView(value);
+		removeView(value["id"]);
 	});
 }
 
