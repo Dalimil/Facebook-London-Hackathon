@@ -217,6 +217,15 @@ function clearAll(){
 	});
 }
 
+function saveLayoutToStorage(){
+	JSON.stringify(root);
+}
+
+function loadFromStorage(){
+	s = ""
+	root = JSON.parse(s);
+}
+
 function debug(){
 	console.log(root);
 	console.log(viewDims);
