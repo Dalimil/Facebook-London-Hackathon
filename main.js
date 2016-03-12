@@ -37,7 +37,7 @@ function createNewWindowParams(){
 	$.each(views, function( key, value ) {
 		var area = value["height"]*value["width"];
 		if(area > mxArea){
-			area = mxArea;
+			mxArea = area;
 			id = key;
 		}
 	});
