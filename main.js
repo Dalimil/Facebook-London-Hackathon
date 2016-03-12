@@ -27,7 +27,7 @@ function drop(webview, ev) {
 		var id = domel.attr('id');
 		console.log(`px${px}, py${py}`);
 		console.log(id);
-		if(py > px) {
+		if(Math.abs(py) < Math.abs(px)) {
 			addNewView(id, url, false);
 		} else {
 			addNewView(id, url, true);
