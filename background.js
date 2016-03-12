@@ -1,41 +1,30 @@
 // Chrome.* APIs only work here
 
 // width and height of the user's screen, in pixels, minus interface features
-const WIDTH = screen.availWidth;
-const HEIGHT = screen.availHeight;
-console.log("Available: "+WIDTH +"x"+HEIGHT);
+const WIDTH_WINDOW = screen.availWidth;
+const HEIGHT_WINDOW = screen.availHeight;
+console.log("Window dim: "+WIDTH_WINDOW +"x"+HEIGHT_WINDOW);
 
-var dockedWindows = [];
+var contentWindow = null;
 
 /** When launched */
 chrome.app.runtime.onLaunched.addListener(function() {
   chrome.app.window.create('main.html', {
-    'outerBounds': {
-      'width': WIDTH,
-      'height': HEIGHT
-    }
-  });
+    outerBounds: {
+      width: WIDTH_WINDOW,
+      height: HEIGHT_WINDOW,
+      left: 0,
+      top: 0
+    },
+    frame: "chrome"
+  }, function(createdWindow) {
+  		WIDTH = createdWindow.innerBounds.width;
+  		HEIGHT = createdWindow.innerBounds.height;
+  		contentWindow = createdWindow.contentWindow;
+  		console.log("Content dim: "+WIDTH+"x"+HEIGHT);
+  	});
 });
 
-
-/** Dock the current browser window */
-function dock(windowId){
-	/* windowId = integer ID of the removed window. */
-	params = getNewWindowParams();
-	params["state"] = "normal";
-	// chrome.windows.update(windowId, params);
-	console.log("updated: " + windowId);
-	// TODO: add windowId to internal representation
-}
-
-function getNewWindowParams(){
-	// TODO
-	return {"left": 0, "top": 0, "width": 600, "height": 300};
-}
-
-/** Fired when a window is removed (closed). */
-function windowRemoved(windowId) { 
-	/* windowId = integer ID of the removed window. */
-	// TODO: remove from internal representation
-}
-
+chrome.app.window.onBoundsChanged.addListener(function() {
+	contentWindow.resetLayout();
+});
