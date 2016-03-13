@@ -4,6 +4,14 @@
 
 Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs
 
+### Avaliable on the Google Chrome Store
+
+#### [Mosaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+Chrome app that provides the main Mosaic application. This allows for you to view multiple web pages within a single window effortlessly.
+
+#### [Mosaic helper extension](https://chrome.google.com/webstore/detail/helper-extension-for-mosa/nnhknchgeoeghedkfolliaihjghiijih)
+Chrome extension to allow for tabs to be sent from a Chrome window to the Mosaic app.
+
 ### Notes
 Cannot use iframes (disallowed by indiv. sites, CORS) - Create a Chrome App (+ Extension) that will control webviews
 

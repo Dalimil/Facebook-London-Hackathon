@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Helper extension for Mosaic",
 	"description": "This extension allows you to move all your browser tabs to Mosaic with one click.",
-	"version": "0.1",
+	"version": "0.3",
 	"browser_action": {
 		"default_icon": "images/logo_38.png",
 		"default_title": "Move to Mosaic"
