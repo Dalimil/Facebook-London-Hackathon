@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 function WebViewElement(src, id) {
     var _this = this;
 
@@ -49,27 +51,8 @@ function WebViewElement(src, id) {
         }
     }
 
-    $(_this.domElement).draggable({
-        handle: _this.controls.dragHandleElement,
-        revert: true,
-        start: function(){
-            $(this).css({"z-index": "1000", "opacity": 0.5});
-        },
-        stop: function(){
-            $(this).css({"z-index": "0", "opacity": 1});
-        }
-    }).css("position", "absolute");
-
-    $(_this.domElement).droppable({
-        drop: function (event, ui) {
-
-            console.log(ui.draggable.attr('id'));
-        }
-
-    });
-
     function createHtml(src, id) {
-        return $("<div class='view' id='" + id + "'>" +
+        return $("<div class='view' id='" + id + "' draggable='true'>" +
             "<div class='viewParent'>" +
             "<div class='viewControls'>" +
             "<div class='buttonsGroup left'>" +
@@ -104,6 +87,10 @@ function WebViewElement(src, id) {
 
 WebViewElement.prototype.getHtml = function() {
     return this.domElement;
+};
+
+WebViewElement.prototype.changeId = function(newId) {
+    $(this.domElement).attr("id", newId);
 };
 
 WebViewElement.prototype.goForward = function() {

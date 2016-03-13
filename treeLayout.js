@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /** Controls the main window contents */
 var WIDTH = null; 
@@ -6,6 +6,8 @@ var HEIGHT = null;
 
 var root = null;
 var viewDims = []; // {id:, left:, top:, width:, height:} for checking mouseX/Y
+
+var webViewsStore = [];
 
 var getNewId = (function () {
     var counter = 0;
@@ -117,8 +119,42 @@ function addNewView(viewId, url, horizontal, firstHalf){
 	updateCoordinates();
 }
 
+function moveView(newViewId, oldObject, horizontal, firstHalf) {
+    if(root == null){
+        initRootView(url);
+    }
+
+    var u = getNodeFromId(root, newViewId);
+    if(u == null){
+        console.log("viewId not found");
+        return;
+    }
+    console.log(u);
+    u.type = (horizontal)?"horizontal":"vertical";
+    u.first = {"percent": 0.5, "ref": null};
+    u.first["ref"] = new node();
+    u.first["ref"].data = u.data;
+    u.data = null;
+    u.second["ref"] = new node();
+    var viewId = getNewId();
+    u.second["ref"].data = {"id": viewId}; //TODO: set url
+
+    if(firstHalf){
+        var tmp = u.first["ref"];
+        u.first["ref"] = u.second["ref"];
+        u.second["ref"] = tmp;
+    }
+
+    oldObject.changeId(viewId);
+    webViewsStore[viewId] = oldObject;
+    $("#views").append(oldObject.getHtml());
+    updateCoordinates();
+}
+
 function createHtmlView(viewId, url){
 	var webViewObject = new WebViewElement(url, viewId);
+
+    webViewsStore[viewId] = webViewObject;
 
 	var webViewHtml = webViewObject.getHtml();
 	$("#views").append(webViewHtml);
@@ -185,6 +221,8 @@ function removeView(viewId) {
 			u.first = u.first["ref"].first;
 		}
 	}
+    delete webViewsStore[viewId];
+    webViewsStore[viewId] = null;
 	removeHtmlView(viewId);
 	updateCoordinates();
 }
