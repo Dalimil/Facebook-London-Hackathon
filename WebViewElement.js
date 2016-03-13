@@ -181,8 +181,10 @@ WebViewElement.prototype.closePage = function() {
 
 WebViewElement.prototype.hideMenu = function() {
     $(this.controlsElement).css("top", "-50px");
+    $(this.controlsElement).css("display", "none");
     $(this.viewContainerElement).css("top", "0");
     $(this.loadElement).css("top", "0");
+
 };
 
 WebViewElement.prototype.showMenu = function() {
@@ -191,6 +193,7 @@ WebViewElement.prototype.showMenu = function() {
     }
     currentDisplayedNavbar = this;
     $(this.controlsElement).css("top", "0");
+    $(this.controlsElement).css("display", "block");
     $(this.viewContainerElement).css("top", "50px");
     $(this.loadElement).css("top", "50px");
 };
