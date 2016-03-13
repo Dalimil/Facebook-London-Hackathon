@@ -8,6 +8,8 @@ var MARGIN = 2.5;
 
 var root = null;
 var viewDims = []; // {id:, left:, top:, width:, height:} for checking mouseX/Y
+var boundaries = []; // {left,top,width,height, path:"RLRRL",horizontal:true/false}
+var lastMouseDown = null;
 
 var webViewsStore = [];
 
@@ -42,33 +44,70 @@ $(document).ready(function(){
 });
 
 function initResizer() {
-    var couldResize = false;
+    $('#views').on('mousedown', function(ev) {
+    	if(lastMouseDown != null) return; // currently pressed
+    	var cX = ev.clientX - $("#leftBar").width();
+    	var cY = ev.clientY;
+    	var u = getBoundaryFromCoordinates(cX, cY);
+    	if(u != null){
+    		lastMouseDown = {"x":cX, "y":cY, "u": u};
+    	}
+    });
 
-    $('#views').on('mouseover', function(ev) {
-        console.log(ev);
-        if(ev.toElement.id === 'views') {
-            couldResize = true;
-            document.body.style.cursor = 'crosshair';
-        }
-        else {
-            couldResize = false;
-            document.body.style.cursor = 'auto';
-        }
+    $('#views').on('mouseup', function(ev) {
+    	lastMouseDown = null; // release
     });
 
     $('#views').on('mousemove', function(ev) {
-        console.log(ev);
-        if(couldResize) {
-            var vid = getViewIdFromCoordinates(ev.offsetX, ev.offsetY);
-            console.log(vid);
+    	var cX = ev.clientX - $("#leftBar").width();
+    	var cY = ev.clientY;
+    	if(lastMouseDown != null){
+    		console.log(cX +" "+cY);
+    	}
+        var u = getBoundaryFromCoordinates(cX, cY);
+        if(u == null && lastMouseDown == null){
+        	// not inside
+        	document.body.style.cursor = 'auto';
+        } else {
+        	if(lastMouseDown == null){
+        		if(u["boundary"]["horizontal"]){
+        			document.body.style.cursor = 'row-resize';
+        		}else {
+        			document.body.style.cursor = 'col-resize';
+        		}
+        	} else {
+	        	var moved = null;
+	        	if(lastMouseDown["u"]["boundary"]["horizontal"]){
+	        		document.body.style.cursor = 'row-resize';
+	        		moved = cY-lastMouseDown["y"];
+	        	}else{
+	        		document.body.style.cursor = 'col-resize';
+	        		moved = cX-lastMouseDown["x"];
+	        	}
+            	var percent = moved/lastMouseDown["u"]["boundary"]["span_range"];
+            	//if(Math.abs(percent) < 1) return;
+            	lastMouseDown["u"]["node"].first["percent"] += percent;
+            	lastMouseDown["x"] = cX;
+            	lastMouseDown["y"] = cY;
+            	updateCoordinates();
+            	console.log(percent +" "+lastMouseDown["u"]["node"].first["percent"]);
+	        }
         }
     });
 }
 
-function getViewIdFromCoordinates(mouseX, mouseY){
-	var offsetX = 0; //TODO
-	var offsetY = 0; //TODO
+function getBoundaryFromCoordinates(mouseX, mouseY){
+	var tol = 1;
+	for(var i=0;i<boundaries.length;i++){
+		var v = boundaries[i];
+		if(mouseX >= v["left"]-tol && mouseX <= v["left"]+v["width"]+tol && mouseY >= v["top"]-tol && mouseY <= v["top"]+v["height"]+tol){
+			return {"node": getNodeFromPath(root, v["path"], 0), "boundary": v};
+		}
+	}
+	return null;
+}
 
+function getViewIdFromCoordinates(mouseX, mouseY){
 	for(var i=0;i<viewDims.length;i++){
 		var v = viewDims[i];
 		if(mouseX >= v["left"] && mouseX < v["left"]+v["width"] && mouseY >= v["top"] && mouseY < v["top"]+v["height"]){
@@ -77,6 +116,13 @@ function getViewIdFromCoordinates(mouseX, mouseY){
 	}
 	console.log("error: couldn't find a view matching this mouse coordinates");
 	return null;
+}
+
+function getNodeFromPath(u, path, path_ind){
+	if(u == null) return null;
+	if(path_ind >= path.length) return u;
+	if(path[path_ind] == 'L') return getNodeFromPath(u.first["ref"], path, path_ind + 1);
+	if(path[path_ind] == 'R') return getNodeFromPath(u.second["ref"], path, path_ind + 1);
 }
 
 function getNodeFromId(u, viewId) {
@@ -104,20 +150,6 @@ function getParentNodeFromId(u, viewId) {
 	if(p1 != null) return p1;
 	var p2 = getParentNodeFromId(u.second["ref"], viewId);
 	return p2;
-}
-
-function getAdjacentNodeFromId(viewId, dx, dy) {
-    var p = getParentNodeFromId(viewId);
-
-}
-
-function isChildOfView(u, viewId) {
-    if(u.type == "leaf") {
-        if(u.data["id"] == viewId) return true;
-        return false;
-    }
-
-    return isChildOfView(u.first["ref"], viewId) || isChildOfView(u.second["ref"], viewId);
 }
 
 /* Like addNewView but for the root  */
@@ -252,34 +284,31 @@ function removeHtmlView(viewId){
 
 function updateCoordinates(){
 	viewDims = [];
+	boundaries = [];
 	if(root == null){
 		return;
 	}
-	updateCoordinatesPrivate(root, 0, 0, WIDTH, HEIGHT, 0, 0, 0, 0);
+	updateCoordinatesPrivate(root, 0, 0, WIDTH, HEIGHT, "");
 }
 
-function updateCoordinatesPrivate(u, left, top, width, height, mleft, mtop, mright, mbottom){
+function updateCoordinatesPrivate(u, left, top, width, height, path){
 	if(u.type == "leaf"){
-		updateView(u.data["id"], {"left":left + mleft, "top":top + mtop, "width":width + mright, "height":height + mbottom});
+		updateView(u.data["id"], {"left":left, "top":top, "width":width, "height":height});
 		viewDims.push({"id":u.data["id"], "left":left, "top":top, "width":width, "height":height});
 		return;
 	}
 
 	var k = u.first["percent"];
 	if(u.type == "horizontal"){ // | -- |
-		updateCoordinatesPrivate(u.first["ref"],
-            left, top, width, height*k,
-            mleft + 0, mtop + 0, mright + 0, mbottom -MARGIN);
-		updateCoordinatesPrivate(u.second["ref"],
-            left, top + height*k, width, height - height*k,
-            mleft + 0, mtop + 0, mright + 0, mbottom + 0);
+		updateCoordinatesPrivate(u.first["ref"], left, top, width, height*k - MARGIN, path +"L");
+		updateCoordinatesPrivate(u.second["ref"], left, top + height*k + MARGIN, width, height - height*k - MARGIN, path +"R");
+		boundaries.push({"left":left, "top":top + height*k - MARGIN, "width": width, "height": 2*MARGIN, 
+			"path": path, "horizontal": true, "span_range": height});
 	}else if(u.type == "vertical"){ // -- | --
-		updateCoordinatesPrivate(u.first["ref"],
-            left, top, width*k, height,
-            mleft + 0, mtop + 0, mright -MARGIN, mbottom + 0);
-		updateCoordinatesPrivate(u.second["ref"],
-            left + width*k, top, width - width*k, height,
-            mleft + 0, mtop + 0, mright + 0, mbottom + 0);
+		updateCoordinatesPrivate(u.first["ref"], left, top, width*k - MARGIN, height, path +"L");
+		updateCoordinatesPrivate(u.second["ref"], left + width*k + MARGIN, top, width - width*k - MARGIN, height, path +"R");
+		boundaries.push({"left":left + width*k -MARGIN, "top":top, "width": 2*MARGIN, "height": height, 
+			"path": path, "horizontal": false, "span_range": width});
 	}
 }
 
