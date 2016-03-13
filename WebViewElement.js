@@ -144,7 +144,7 @@ function WebViewElement(src, id) {
             "</div>" +
             "</div>" +
             "<div class='viewContainer'>" +
-            "<webview class='webview' src='" + src + "' style='width:100%; height:100%;'></webview>" +
+            "<webview class='webview' partition='persist:mosaic' src='" + src + "' style='width:100%; height:100%;'></webview>" +
             "</div>" +
             "<div class='loader'><div class='bar'></div><div class='bar'></div><div class='bar'></div></div>" +
             "</div>");
