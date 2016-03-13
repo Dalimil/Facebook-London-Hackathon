@@ -16,9 +16,12 @@ function WebViewElement(src, id) {
         reloadButton: $(_this.controlsElement).find(".reload"),
         closeButton: $(_this.controlsElement).find(".close"),
         addressInputBar : $(_this.controlsElement).find(".addressInput"),
-        dragHandleElement : $(_this.controlsElement).find(".move")
+        dragHandleElement : $(_this.controlsElement).find(".move"),
     };
+    _this.loadElement =  $(_this.domElement).find(".loader");
     _this.viewContainerElement = $(_this.domElement).find(".viewContainer");
+
+    //_this.webViewElement.setUserAgentOverride("Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25");
 
     _this.isLoading = false;
 
@@ -30,9 +33,69 @@ function WebViewElement(src, id) {
     $(_this.controls.reloadButton).click(function() {_this.reloadPage();});
     $(_this.controls.closeButton).click(function() {_this.closePage();});
 
+    //_this.webViewElement.addEventListener('exit', handleExit);
+    _this.webViewElement.addEventListener('loadstart', handleLoadStart);
+    _this.webViewElement.addEventListener('loadstop', handleLoadStop);
+    //_this.webViewElement.addEventListener('loadabort', handleLoadAbort);
+    _this.webViewElement.addEventListener('loadredirect', handleLoadRedirect);
+    _this.webViewElement.addEventListener('loadcommit', handleLoadCommit);
+
+    function handleLoadCommit(event) {
+        //resetExitedState();
+        if (!event.isTopLevel) {
+            return;
+        }
+
+        $(_this.controls.addressInputBar).val(event.url);
+
+        if (_this.webViewElement.canGoBack()) {
+            $(_this.controls.backButton).removeClass("disabled");
+        } else {
+            $(_this.controls.backButton).addClass("disabled");
+        }
+
+        if (_this.webViewElement.canGoForward()) {
+            $(_this.controls.forwardButton).removeClass("disabled");
+        } else {
+            $(_this.controls.forwardButton).addClass("disabled");
+        }
+        //closeBoxes();
+    }
+
+    function handleLoadStart(event) {
+        _this.isLoading = true;
+        _this.loadElement.css("height", "6px");
+
+        //resetExitedState();
+        if (!event.isTopLevel) {
+            return;
+        }
+
+        $(_this.controls.addressInputBar).val(event.url);
+    }
+
+    function handleLoadRedirect(event) {
+        //resetExitedState();
+        if (!event.isTopLevel) {
+            return;
+        }
+
+        $(_this.controls.addressInputBar).val(event.newUrl);
+    }
+
+    function handleLoadStop(event) {
+        _this.isLoading = false;
+        _this.loadElement.css("height", 0);
+    }
+
     $(_this.controls.addressInputBar).keypress(function(event) {
         if (event.keyCode == 13) {
-            _this.openUrl(_this.controls.addressInputBar.val());
+            var string = _this.controls.addressInputBar.val();
+            if(isUrl(string)) {
+                _this.openUrl(string);
+            } else {
+                _this.openUrl("https://www.google.co.uk/search?q=" + string);
+            }
         }
     });
 
@@ -83,6 +146,7 @@ function WebViewElement(src, id) {
             "<div class='viewContainer'>" +
             "<webview class='webview' src='" + src + "' style='width:100%; height:100%;'></webview>" +
             "</div>" +
+            "<div class='loader'><div class='bar'></div><div class='bar'></div><div class='bar'></div></div>" +
             "</div>");
     }
 }
@@ -118,10 +182,12 @@ WebViewElement.prototype.closePage = function() {
 WebViewElement.prototype.hideMenu = function() {
     $(this.controlsElement).css("top", "-50px");
     $(this.viewContainerElement).css("top", "0");
+    $(this.loadElement).css("top", "0");
 };
 
 WebViewElement.prototype.showMenu = function() {
     $(this.controlsElement).css("top", "0");
     $(this.viewContainerElement).css("top", "50px");
+    $(this.loadElement).css("top", "50px");
 };
 
