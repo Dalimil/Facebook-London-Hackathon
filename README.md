@@ -13,4 +13,4 @@ User wants to open up Facebook, Gmail, Slack, Spotify, stock market,...and would
 Save windows on close (maybe just save addresses and positions if not possible)? How can an extension store data?
 
 ### Ideas to mention during presentation
-The thing that I am most proud is that we implemented the layout as a binary tree and all operations such as resizing, adding, deleting or moving windows are implemented as modifications of this tree and most updates are recursive traversals...
+The thing that I am most proud is that we implemented the layout as a binary tree and all operations such as resizing, adding, deleting or moving windows are implemented as modifications of this tree and most updates are recursive traversals... For example: action 'resetLayout' is a breadth first search that recreates the layout tree
