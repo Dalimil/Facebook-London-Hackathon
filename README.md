@@ -1,8 +1,8 @@
 # Facebook London Hackathon (London, 12-13th March 2016)
 
-### We built [Mozaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+### We built [Mosaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
 
-Mozaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs
+Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs
 
 ### Notes
 Cannot use iframes (disallowed by indiv. sites, CORS) - Create a Chrome App (+ Extension) that will control webviews
