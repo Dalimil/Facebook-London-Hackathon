@@ -86,6 +86,10 @@ function initResizer() {
 	        	}
             	var percent = moved/lastMouseDown["u"]["boundary"]["span_range"];
             	if(Math.abs(percent) < 0.01) return;
+   				if(lastMouseDown["u"]["node"].first["percent"]+percent >= 0.85 || 
+   					lastMouseDown["u"]["node"].first["percent"]+percent <= 0.15){
+            		return;
+            	}
             	lastMouseDown["u"]["node"].first["percent"] += percent;
             	lastMouseDown["x"] = cX;
             	lastMouseDown["y"] = cY;
