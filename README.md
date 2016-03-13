@@ -5,6 +5,9 @@
 
 **Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window view rather than many individual tabs.**
 
+![Mosaic Chrome App icon](https://github.com/Dalimil/Mosaic-Chrome-App/blob/master/Logo-Icon-Mosaic.png)
+![Mosaic Chrome App](https://github.com/Dalimil/Mosaic-Chrome-App/blob/master/Screenshot-Mosaic.jpg)
+
 #### [Mosaic Chrome App](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
 Chrome App that provides the main Mosaic application. It allows you to easily view and manipulate multiple web pages in a single window.
 
