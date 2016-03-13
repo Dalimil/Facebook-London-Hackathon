@@ -85,7 +85,7 @@ function initResizer() {
 	        		moved = cX-lastMouseDown["x"];
 	        	}
             	var percent = moved/lastMouseDown["u"]["boundary"]["span_range"];
-            	//if(Math.abs(percent) < 1) return;
+            	if(Math.abs(percent) < 0.01) return;
             	lastMouseDown["u"]["node"].first["percent"] += percent;
             	lastMouseDown["x"] = cX;
             	lastMouseDown["y"] = cY;
