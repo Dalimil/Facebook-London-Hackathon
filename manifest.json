@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Mosaic",
 	"description": "Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs",
-	"version": "0.5",
+	"version": "0.6",
 	"icons": {
 		"16": "chromestorecontent/logo_16.png",
 		"48": "chromestorecontent/logo_48.png",
