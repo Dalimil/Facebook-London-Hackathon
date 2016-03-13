@@ -9,7 +9,8 @@
 	},
 	"permissions": [
 		"activeTab",
-		"tabs"
+		"tabs",
+		"management"
 	],
 	"background": {
 		"scripts": [
