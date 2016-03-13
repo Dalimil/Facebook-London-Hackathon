@@ -125,6 +125,7 @@ function initRootView(url){
 	root.data = {"url": url, "id": id};
 	createHtmlView(id, url);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Create a new view (open/add), 
@@ -133,6 +134,7 @@ function initRootView(url){
 function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
+		return;
 	}
 
 	var u = getNodeFromId(root, viewId);
@@ -157,12 +159,43 @@ function addNewView(viewId, url, horizontal, firstHalf){
 	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
+	saveLayoutToStorage();
+}
+
+function addNewViewFromLauncher(url){
+	var mxArea = -1;
+	var value = null;
+	$.each(viewDims, function( index, val ) {
+		var area = val["width"]*val["height"];
+		if(area >= mxArea){
+			mxArea = area;
+			value = val;
+		}
+	});
+	if(value == null) return;
+	var horizontal = true;
+	var firstHalf = false;
+	if(value["width"]/value["height"] >= WIDTH/HEIGHT){
+		horizontal = false;
+	}
+	addNewView(value["id"], url, horizontal, firstHalf);
 }
 
 function createHtmlView(viewId, url){
 	var webViewObject = new WebViewElement(url, viewId);
+	webViewObject.webViewElement.addEventListener('contentload', function() {
+	  	// update our saved url
+	  	var id = $(webViewObject.domElement).attr("id");
+	  	var u = getNodeFromId(root, id);
+		if(u != null){
+			u.data["url"] = $(webViewObject.webViewElement).attr('src');
+			console.log(u.data["url"]);
+			saveLayoutToStorage();
+		}
+	});
 
 	var webViewHtml = webViewObject.getHtml();
+	
 	$("#views").append(webViewHtml);
 	setupForDrop(webViewHtml, webViewObject);
 }
@@ -247,12 +280,14 @@ function removeView(viewId) {
 	}
 	removeHtmlView(viewId);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Used by background.js - resets all windows to default sizes */
 function resetLayout(){
 	initDimensions();
 	// TODO
+	saveLayoutToStorage();
 }
 
 function clearAll(){
