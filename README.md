@@ -1,26 +1,21 @@
-# Facebook London Hackathon (London, 12-13th March 2016)
+# Mosaic - Chrome App
+## Facebook London Hackathon (London, 12-13th March 2016)
 
-### We built [Mosaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+### We built [Mosaic - available on Google Chrome Store](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
 
-Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs
+**Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window view rather than many individual tabs.**
 
-### Avaliable on the Google Chrome Store
+#### [Mosaic Chrome App](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+Chrome App that provides the main Mosaic application. It allows you to easily view and manipulate multiple web pages in a single window.
 
-#### [Mosaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
-Chrome app that provides the main Mosaic application. This allows for you to view multiple web pages within a single window effortlessly.
-
-#### [Mosaic helper extension](https://chrome.google.com/webstore/detail/helper-extension-for-mosa/nnhknchgeoeghedkfolliaihjghiijih)
-Chrome extension to allow for tabs to be sent from a Chrome window to the Mosaic app.
+#### [Mosaic Helper Extension](https://chrome.google.com/webstore/detail/helper-extension-for-mosa/nnhknchgeoeghedkfolliaihjghiijih)
+Chrome extension that allows you to move your browser tabs from a Chrome window to Mosaic.
 
 ### Notes
-Cannot use iframes (disallowed by indiv. sites, CORS) - Create a Chrome App (+ Extension) that will control webviews
+Iframes could not be used to accomplish the required functionality as they are often blocked by the origin websites. That is why a Chrome App, which can use webview elements and completely avoid iframes, was created. Users have the ability to add, delete, resize and drag and drop webpage views. State of the layout is synchronized with user's Google account and reopening the app always restores the last opened web pages, thanks to storing the user session in the cloud.
 
-It will allow you to see several different pages at a single screen
+Having the ability to see several different webpages at a single screen increases productivity and is generally more convenient. It is a great tool with external displays or screens that have high resolution. Do you ever get bored of clicking through all your browser tabs? With Mosaic you can see all your favourite websites in a single window...
 
-Great for external displays (or when you use 2 or 3 in the office) with high res but also for regular users because you get the continuous range rather than only fixed half and half split (like standard OSs allow you to do) + once you start resizing one, other windows can be resized as well (normally they would stay the same - independent)
-
-User wants to open up Facebook, Gmail, Slack, Spotify, stock market,...and would like to see several browser windows at the same time without clicking through the tabs...  all at one screen + actions to add new, remove and dock and undock and resize (drag edge between - continuous range), lock position, reset layout.  
-Window state is saved to the cloud and is restored after closing and reopening.
-
-### Ideas to mention during presentation
-The thing that I am most proud is that we implemented the layout as a binary tree and all operations such as resizing, adding, deleting or moving windows are implemented as modifications of this tree and most updates are recursive traversals... For example: action 'resetLayout' is a breadth first search that recreates the layout tree
+### Layout
+The representation of the layout is implemented as a binary tree.  
+All operations (such as resizing, adding, deleting or moving windows) are implemented as functions that modify this tree and often involve recursive traversals. For example, action 'resetLayout' is a function that rebuilds the whole tree using breadth first search and adding new nodes/views layer by layer.
