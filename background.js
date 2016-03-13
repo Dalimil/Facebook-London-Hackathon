@@ -3,6 +3,7 @@
 // width and height of the user's screen, in pixels, minus interface features
 const WIDTH_WINDOW = screen.availWidth;
 const HEIGHT_WINDOW = screen.availHeight;
+const extensionId = "nnhknchgeoeghedkfolliaihjghiijih";
 // console.log("Window dim: "+WIDTH_WINDOW +"x"+HEIGHT_WINDOW);
 
 var mainWindow = null;
@@ -48,6 +49,7 @@ chrome.runtime.onMessageExternal.addListener(
         var url = request.tabs[i];
         mainWindow.contentWindow.addNewViewFromLauncher(url);
       }
+      chrome.runtime.sendMessage(extensionId, {'message': 'ack'});
     }
   }
 );
