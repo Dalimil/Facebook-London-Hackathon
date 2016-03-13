@@ -67,6 +67,7 @@ function drop(webview, ev) {
 	} else if(event.dataTransfer && event.dataTransfer.types[0] === 'htmlid') {
 		var idToMove = event.dataTransfer.getData('htmlid');
 		var oldObj = webViewsStore[idToMove];
+        console.log(oldObj);
 		if(Math.abs(py) < Math.abs(px)) {
 			moveView(id, oldObj, false, px < 0.5);
 		} else {
