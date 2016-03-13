@@ -141,8 +141,11 @@ html {
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.left {
-    float: left;
+    position: absolute;
     height: 50px;
+    left:0;
+    top:0;
+    right: 100px;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.left .button {
@@ -151,8 +154,11 @@ html {
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.right {
-    float: right;
+    position: absolute;
+    right:0;
+    top:0;
     height: 50px;
+    width: 90px;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.right .button,
@@ -225,8 +231,8 @@ html {
     background-color: #454545;
     height: 40px;
     vertical-align: top;
-    min-width:250px;
-    width: 50%;
+    min-width:150px;
+    width: 60%;
     padding-left: 5px;
     padding-right: 5px;
     border: none;

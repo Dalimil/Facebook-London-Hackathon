@@ -1,6 +1,6 @@
 "use strict";
 
-
+var currentDisplayedNavbar = null;
 
 function WebViewElement(src, id) {
     var _this = this;
@@ -26,7 +26,7 @@ function WebViewElement(src, id) {
     _this.isLoading = false;
 
     $(_this.domElement).bind('mousewheel', onMouseWheel);
-    $(_this.domElement).mouseleave(function() {_this.hideMenu();});
+    //$(_this.domElement).mouseleave(function() {_this.hideMenu();});
 
     $(_this.controls.backButton).click(function() {_this.goBack();});
     $(_this.controls.forwardButton).click(function() {_this.goForward();});
@@ -186,6 +186,10 @@ WebViewElement.prototype.hideMenu = function() {
 };
 
 WebViewElement.prototype.showMenu = function() {
+    if (currentDisplayedNavbar !== null) {
+        currentDisplayedNavbar.hideMenu();
+    }
+    currentDisplayedNavbar = this;
     $(this.controlsElement).css("top", "0");
     $(this.viewContainerElement).css("top", "50px");
     $(this.loadElement).css("top", "50px");

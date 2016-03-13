@@ -1,17 +1,22 @@
 {
 	"manifest_version": 2,
-
-	"name": "Mozaic",
-	"description": "TODO: description",
+	"name": "Mosaic",
+	"description": "Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window instead of many single tabs",
 	"version": "0.1",
-
+	"icons": {
+		"16": "chromestorecontent/logo_16.png",
+		"48": "chromestorecontent/logo_48.png",
+		"128": "chromestorecontent/logo_128.png"
+	},
 	"permissions": [
-		"webview", "storage"
+		"webview",
+		"storage"
 	],
-
 	"app": {
-		"background": { /* Run in the background */
-			"scripts": ["background.js"]
+		"background": {
+			"scripts": [
+				"background.js"
+			]
 		}
 	}
 }
