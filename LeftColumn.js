@@ -12,7 +12,7 @@ function LeftColumn() {
     };
 
     _this.buttons.addPageButton.click(function () {
-        addNewView("webview-id-1", "https://google.com", _this.nextOrientation);
+        addNewViewFromLauncher("https://google.com");
         _this.nextOrientation = !_this.nextOrientation;
     });
 

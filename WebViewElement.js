@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 function WebViewElement(src, id) {
     var _this = this;
 
@@ -34,6 +36,10 @@ function WebViewElement(src, id) {
         }
     });
 
+    $(_this.controls.dragHandleElement).on("dragstart", function () {
+        event.dataTransfer.setData('htmlid', $(_this.domElement).attr("id"));
+    });
+
     function onMouseWheel(event) {
         _this.scrollDelta += event.originalEvent.wheelDelta;
         if (_this.scrollDelta < -100) {
@@ -55,24 +61,22 @@ function WebViewElement(src, id) {
             "<div class='viewControls'>" +
             "<div class='buttonsGroup left'>" +
             "<div class='button back'>" +
-            "<button>PREV</button>" +
+            "<i><img src='images/icons/Icon_Back.png'></i>" +
             "</div>" +
             "<div class='button forward'>" +
-            "<button>NEXT</button>" +
+            "<i><img src='images/icons/Icon_Forward.png'></i>" +
             "</div>" +
-            "<div class='searchBar'>" +
-            "<input type='text' class='addressInput' />" +
+            "<input type='text' class='addressInput' placeholder='Type an url...' />" +
             "<div class='button reload'>" +
-            "<button>REFRESH</button>" +
-            "</div>" +
+            "<i><img src='images/icons/Icon_Refresh.png'></i>" +
             "</div>" +
             "</div>" +
             "<div class='buttonsGroup right'>" +
-            "<div class='handle move'>" +
-            "<i>MOVE</i>" +
+            "<div class='handle move' draggable='true'>" +
+            "<i><img src='images/icons/Icon_Move.png'></i>" +
             "</div>" +
             "<div class='button close'>" +
-            "<button>CLOSE</button>" +
+            "<i><img src='images/icons/Icon_Close.png'></i>" +
             "</div>" +
             "</div>" +
             "</div>" +
@@ -85,6 +89,10 @@ function WebViewElement(src, id) {
 
 WebViewElement.prototype.getHtml = function() {
     return this.domElement;
+};
+
+WebViewElement.prototype.changeId = function(newId) {
+    $(this.domElement).attr("id", newId);
 };
 
 WebViewElement.prototype.goForward = function() {
@@ -104,16 +112,16 @@ WebViewElement.prototype.reloadPage = function() {
 };
 
 WebViewElement.prototype.closePage = function() {
-    console.log("close");
+    removeView($(this.domElement).attr("id"));
 };
 
 WebViewElement.prototype.hideMenu = function() {
-    $(this.controlsElement).css("top", "-30px");
+    $(this.controlsElement).css("top", "-50px");
     $(this.viewContainerElement).css("top", "0");
 };
 
 WebViewElement.prototype.showMenu = function() {
     $(this.controlsElement).css("top", "0");
-    $(this.viewContainerElement).css("top", "30px");
+    $(this.viewContainerElement).css("top", "50px");
 };
 
