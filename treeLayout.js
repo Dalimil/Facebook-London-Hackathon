@@ -206,13 +206,17 @@ function addNewViewFromLauncher(url){
 			value = val;
 		}
 	});
-	if(value == null) return;
-	var horizontal = true;
-	var firstHalf = false;
-	if(value["width"]/value["height"] >= WIDTH/HEIGHT){
-		horizontal = false;
-	}
-	addNewView(value["id"], url, horizontal, firstHalf);
+	if(value == null) {
+        initRootView(url);
+    } else {
+        var horizontal = true;
+        var firstHalf = false;
+        if(value["width"]/value["height"] >= WIDTH/HEIGHT){
+            horizontal = false;
+        }
+        console.log(value);
+        addNewView(value["id"], url, horizontal, firstHalf);
+    }
 }
 
 function moveView(newViewId, oldObject, horizontal, firstHalf) {
