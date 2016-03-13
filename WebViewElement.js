@@ -118,12 +118,12 @@ WebViewElement.prototype.closePage = function() {
 };
 
 WebViewElement.prototype.hideMenu = function() {
-    $(this.controlsElement).css("top", "-30px");
+    $(this.controlsElement).css("top", "-50px");
     $(this.viewContainerElement).css("top", "0");
 };
 
 WebViewElement.prototype.showMenu = function() {
     $(this.controlsElement).css("top", "0");
-    $(this.viewContainerElement).css("top", "30px");
+    $(this.viewContainerElement).css("top", "50px");
 };
 

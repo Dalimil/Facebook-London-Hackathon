@@ -2,6 +2,7 @@
 body {
     height: 100%;
     margin: 0;
+    background: #000;;
 }
 
 html {
@@ -70,11 +71,13 @@ html {
 
 .view > .viewParent > .viewControls {
     position: relative;
-    top: -30px;
-    height:30px;
+    top: -50px;
+    height:50px;
     width: 100%;
-    background-color: rgba(239, 239, 239, 1);
+    background-color: #737373;
     transition: top 0.10s ease-out;
+    vertical-align: middle;
+    line-height: 50px;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.left {
@@ -86,6 +89,10 @@ html {
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup .button {
+    margin-top: 5px;
+    background-color: #454545;
+    height: 40px;
+    width: 40px;
     display: inline-block;
 }
 .view > .viewParent > .viewControls > .buttonsGroup .handle {
