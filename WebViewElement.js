@@ -61,24 +61,22 @@ function WebViewElement(src, id) {
             "<div class='viewControls'>" +
             "<div class='buttonsGroup left'>" +
             "<div class='button back'>" +
-            "<button>PREV</button>" +
+            "<i><img src='images/icons/Icon_Back.png'></i>" +
             "</div>" +
             "<div class='button forward'>" +
-            "<button>NEXT</button>" +
+            "<i><img src='images/icons/Icon_Forward.png'></i>" +
             "</div>" +
-            "<div class='searchBar'>" +
-            "<input type='text' class='addressInput' />" +
+            "<input type='text' class='addressInput' placeholder='Type an url...' />" +
             "<div class='button reload'>" +
-            "<button>REFRESH</button>" +
-            "</div>" +
+            "<i><img src='images/icons/Icon_Refresh.png'></i>" +
             "</div>" +
             "</div>" +
             "<div class='buttonsGroup right'>" +
             "<div class='handle move' draggable='true'>" +
-            "<i>MOVE</i>" +
+            "<i><img src='images/icons/Icon_Move.png'></i>" +
             "</div>" +
             "<div class='button close'>" +
-            "<button>CLOSE</button>" +
+            "<i><img src='images/icons/Icon_Close.png'></i>" +
             "</div>" +
             "</div>" +
             "</div>" +

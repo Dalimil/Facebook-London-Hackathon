@@ -2,7 +2,7 @@
 body {
     height: 100%;
     margin: 0;
-    background: #000;;
+    background: #000;
 }
 
 html {
@@ -11,7 +11,7 @@ html {
 
 #views {
     position: absolute;
-    left: 32px;
+    left: 60px;
     bottom: 0;
     top: 0;
     right: 0;
@@ -20,20 +20,37 @@ html {
 
 #leftBar {
     position: absolute;
-    width: 32px;
+    width: 60px;
     left: 0;
     bottom: 0;
     top: 0;
-    background-color: aqua;
+    background-color: #515151;
     height: 100%;
 }
 
 #leftBar > .buttonElement {
-    background-color: blue;
-    height: 32px;
+    cursor: pointer;
+    width:50px;
+    margin-left: 5px;
+    margin-top: 5px;
+    background-color: #3c3c3c;
+    height: 50px;
     color: white;
-    line-height: 32px;
+    line-height: 50px;
     text-align: center;
+}
+#leftBar > .buttonElement:hover {
+    background-color: #31a5ff;
+}
+
+#leftBar > .buttonElement > i {
+    margin-top: 5px;
+}
+
+#leftBar > .buttonElement > i > img {
+    margin-top: 5px;
+    max-width: 40px;
+    max-height: 40px;
 }
 
 .view {
@@ -83,24 +100,88 @@ html {
 
 .view > .viewParent > .viewControls > .buttonsGroup.left {
     float: left;
+    height: 50px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup.left .button {
+    margin-left: 5px;
+    float: left;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup.right {
     float: right;
+    height: 50px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup.right .button,
+.view > .viewParent > .viewControls > .buttonsGroup.right .handle{
+    margin-right: 5px;
+    float: left;
 }
 
 .view > .viewParent > .viewControls > .buttonsGroup .button {
+    cursor: pointer;
+    margin-top: 5px;
+    background-color: #454545;
+    height: 40px;
+    width: 40px;
+    display: block;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .button:hover {
+    background-color: #31a5ff;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .button > i {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .button > i > img {
+    margin-top: 5px;
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .handle {
+    cursor: move;
     margin-top: 5px;
     background-color: #454545;
     height: 40px;
     width: 40px;
     display: inline-block;
 }
-.view > .viewParent > .viewControls > .buttonsGroup .handle {
-    cursor: move;
-    display: inline-block;
+
+.view > .viewParent > .viewControls > .buttonsGroup .handle:hover {
+    background-color: #31a5ff;
 }
 
-.view > .viewParent > .viewControls > .buttonsGroup .searchBar {
-    display: inline-block;
+.view > .viewParent > .viewControls > .buttonsGroup .handle > i {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup .handle > i > img {
+    max-width: 30px;
+    max-height: 30px;
+    margin-top: 5px;
+}
+
+.view > .viewParent > .viewControls > .buttonsGroup >  .addressInput  {
+    margin-top: 5px;
+    margin-left: 5px;
+    padding: 0;
+    background-color: #454545;
+    height: 40px;
+    vertical-align: top;
+    min-width:250px;
+    width: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+    color: #cccccc;
+    font-size: 1.7em;
+    font-weight: 300;
+    display: block;
+    float: left;
 }
