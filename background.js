@@ -39,3 +39,16 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
+
+// external from the helper extension
+chrome.runtime.onMessageExternal.addListener(
+  function(request, sender, sendResponse) {
+    if (request.message == 'browser_tabs'){
+      for(var i=0;i<request.tabs.length;i++){
+        var tab = request.tabs[i];
+        var url = tab.url;
+        mainWindow.contentWindow.addNewViewFromLauncher(url);
+      }
+    }
+  }
+);
