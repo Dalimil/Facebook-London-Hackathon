@@ -26,6 +26,11 @@ function setupForDrop(webViewHtml, webViewObject) {
 	webViewHtml.on('drop', function(ev){drop(webViewObject, ev); enterCount = 0;});
 }
 
+function addCallbacks(webViewHtml, webViewObject) {
+	setupForDrop(webViewHtml, webViewObject);
+
+}
+
 function addToWindow(webview) {
 	$(webview.webViewElement).animate({transform: 'scale(.9,.9)'});
 	$(webview.controlsElement).css('visibility', 'hidden');

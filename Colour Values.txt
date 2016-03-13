@@ -1,0 +1,9 @@
+(Values are hex)
+
+-Top Bar-
+Bar Background: #737373
+Button Background: #454545
+
+-Side Bar-
+Bar Background: #515151
+Button Background: #3c3c3c

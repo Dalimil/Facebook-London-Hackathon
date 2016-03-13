@@ -2,7 +2,9 @@
 
 /** Controls the main window contents */
 var WIDTH = null; 
-var HEIGHT = null; 
+var HEIGHT = null;
+
+var MARGIN = 2.5;
 
 var root = null;
 var viewDims = []; // {id:, left:, top:, width:, height:} for checking mouseX/Y
@@ -35,7 +37,33 @@ $(document).ready(function(){
 	initDimensions();
 
 	loadFromStorage();
+
+    initResizer();
 });
+
+function initResizer() {
+    var couldResize = false;
+
+    $('#views').on('mouseover', function(ev) {
+        console.log(ev);
+        if(ev.toElement.id === 'views') {
+            couldResize = true;
+            document.body.style.cursor = 'crosshair';
+        }
+        else {
+            couldResize = false;
+            document.body.style.cursor = 'auto';
+        }
+    });
+
+    $('#views').on('mousemove', function(ev) {
+        console.log(ev);
+        if(couldResize) {
+            var vid = getViewIdFromCoordinates(ev.offsetX, ev.offsetY);
+            console.log(vid);
+        }
+    });
+}
 
 function getViewIdFromCoordinates(mouseX, mouseY){
 	var offsetX = 0; //TODO
@@ -76,6 +104,20 @@ function getParentNodeFromId(u, viewId) {
 	if(p1 != null) return p1;
 	var p2 = getParentNodeFromId(u.second["ref"], viewId);
 	return p2;
+}
+
+function getAdjacentNodeFromId(viewId, dx, dy) {
+    var p = getParentNodeFromId(viewId);
+
+}
+
+function isChildOfView(u, viewId) {
+    if(u.type == "leaf") {
+        if(u.data["id"] == viewId) return true;
+        return false;
+    }
+
+    return isChildOfView(u.first["ref"], viewId) || isChildOfView(u.second["ref"], viewId);
 }
 
 /* Like addNewView but for the root  */
@@ -213,23 +255,31 @@ function updateCoordinates(){
 	if(root == null){
 		return;
 	}
-	updateCoordinatesPrivate(root, 0, 0, WIDTH, HEIGHT);
+	updateCoordinatesPrivate(root, 0, 0, WIDTH, HEIGHT, 0, 0, 0, 0);
 }
 
-function updateCoordinatesPrivate(u, left, top, width, height){
+function updateCoordinatesPrivate(u, left, top, width, height, mleft, mtop, mright, mbottom){
 	if(u.type == "leaf"){
-		updateView(u.data["id"], {"left":left, "top":top, "width":width, "height":height});
+		updateView(u.data["id"], {"left":left + mleft, "top":top + mtop, "width":width + mright, "height":height + mbottom});
 		viewDims.push({"id":u.data["id"], "left":left, "top":top, "width":width, "height":height});
 		return;
 	}
 
 	var k = u.first["percent"];
 	if(u.type == "horizontal"){ // | -- |
-		updateCoordinatesPrivate(u.first["ref"], left, top, width, height*k);
-		updateCoordinatesPrivate(u.second["ref"], left, top + height*k, width, height - height*k);
+		updateCoordinatesPrivate(u.first["ref"],
+            left, top, width, height*k,
+            mleft + 0, mtop + 0, mright + 0, mbottom -MARGIN);
+		updateCoordinatesPrivate(u.second["ref"],
+            left, top + height*k, width, height - height*k,
+            mleft + 0, mtop + 0, mright + 0, mbottom + 0);
 	}else if(u.type == "vertical"){ // -- | --
-		updateCoordinatesPrivate(u.first["ref"], left, top, width*k, height);
-		updateCoordinatesPrivate(u.second["ref"], left + width*k, top, width - width*k, height);
+		updateCoordinatesPrivate(u.first["ref"],
+            left, top, width*k, height,
+            mleft + 0, mtop + 0, mright -MARGIN, mbottom + 0);
+		updateCoordinatesPrivate(u.second["ref"],
+            left + width*k, top, width - width*k, height,
+            mleft + 0, mtop + 0, mright + 0, mbottom + 0);
 	}
 }
 
