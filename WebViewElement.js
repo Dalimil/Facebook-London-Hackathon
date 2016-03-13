@@ -36,6 +36,10 @@ function WebViewElement(src, id) {
         }
     });
 
+    $(_this.controls.dragHandleElement).on("dragstart", function () {
+        event.dataTransfer.setData('htmlid', $(_this.domElement).attr("id"));
+    });
+
     function onMouseWheel(event) {
         _this.scrollDelta += event.originalEvent.wheelDelta;
         if (_this.scrollDelta < -100) {
@@ -52,7 +56,7 @@ function WebViewElement(src, id) {
     }
 
     function createHtml(src, id) {
-        return $("<div class='view' id='" + id + "' draggable='true'>" +
+        return $("<div class='view' id='" + id + "'>" +
             "<div class='viewParent'>" +
             "<div class='viewControls'>" +
             "<div class='buttonsGroup left'>" +
@@ -70,7 +74,7 @@ function WebViewElement(src, id) {
             "</div>" +
             "</div>" +
             "<div class='buttonsGroup right'>" +
-            "<div class='handle move'>" +
+            "<div class='handle move' draggable='true'>" +
             "<i>MOVE</i>" +
             "</div>" +
             "<div class='button close'>" +

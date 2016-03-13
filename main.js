@@ -10,7 +10,6 @@ function setupForDrop(webViewHtml, webViewObject) {
 	webViewHtml.on('dragenter', function(ev){
 		if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain' || event.dataTransfer.types[0] === 'htmlid') {
 			var text = event.dataTransfer.getData('text');
-			console.log("enter yes", text);
 			if(enterCount == 0){addToWindow(webViewObject);}
 		}
 		enterCount++;
@@ -42,7 +41,6 @@ function drop(webview, ev) {
 	resetWindow(webview);
 	// If it's plain text we can attempt to open this
 	//console.log(event.dataTransfer.types[0])
-	console.log("drop", event.dataTransfer.types[0]);
 	var domel = webview.domElement;
 	var width = domel.width();
 	var height = domel.height();
