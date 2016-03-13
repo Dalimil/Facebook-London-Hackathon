@@ -1,5 +1,11 @@
 'use strict';
 
+$.fn.redraw = function(){
+	$(this).each(function(){
+		var redraw = this.offsetHeight;
+	});
+};
+
 function isUrl(s) {
 	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 	return regexp.test(s);
@@ -8,7 +14,7 @@ function isUrl(s) {
 function setupForDrop(webViewHtml, webViewObject) {
 	var enterCount = 0;
 	webViewHtml.on('dragenter', function(ev){
-		if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain' || event.dataTransfer.types[0] === 'htmlid') {
+		if(event.dataTransfer && (event.dataTransfer.types[0] === 'text/plain' || event.dataTransfer.types[0] === 'htmlid')) {
 			var text = event.dataTransfer.getData('text');
 			if(enterCount == 0){addToWindow(webViewObject);}
 		}
@@ -17,11 +23,12 @@ function setupForDrop(webViewHtml, webViewObject) {
 	webViewHtml.on('dragleave', function(ev){
 		enterCount--;
 		if(enterCount == 0) {
-			resetWindow(webViewObject);
+			resetWindow(webViewObject, true);
 		}
 		if(enterCount < 0) enterCount = 0;
 	});
 	$(webViewObject.webViewElement).on('dragover', function(ev){ev.stopPropagation();});
+	$(webViewObject.webViewElement).on('drop', function(ev){resetWindow(webViewObject, false); ev.stopPropagation();});
 	webViewHtml.on('dragover', function(ev){ev.originalEvent.dataTransfer.dropEffect = "move"; ev.preventDefault();});
 	webViewHtml.on('drop', function(ev){drop(webViewObject, ev); enterCount = 0;});
 }
@@ -32,18 +39,19 @@ function addCallbacks(webViewHtml, webViewObject) {
 }
 
 function addToWindow(webview) {
-	$(webview.webViewElement).animate({transform: 'scale(.9,.9)'});
 	$(webview.controlsElement).css('visibility', 'hidden');
 	webview.hideMenu();
+	$(webview.webViewElement).animate({transform: 'scale(.9,.9)'});
 }
 
-function resetWindow(webview) {
-	$(webview.webViewElement).animate({transform: 'scale(1,1)'});
-	$(webview.controlsElement).delay(500).css('visibility', 'visible');
+function resetWindow(webview, animate) {
+	var delay = animate ? 500 : 0;
+	$(webview.webViewElement).animate({transform: 'scale(1,1)'}, delay);
+	$(webview.controlsElement).delay(delay).css('visibility', 'visible');
 }
 
 function drop(webview, ev) {
-	resetWindow(webview);
+	resetWindow(webview, false);
 	// If it's plain text we can attempt to open this
 	//console.log(event.dataTransfer.types[0])
 	var domel = webview.domElement;
