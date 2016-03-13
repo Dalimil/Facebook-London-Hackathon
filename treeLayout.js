@@ -17,7 +17,7 @@ var getNewId = (function () {
     var counter = 0;
     return function () {
     	counter += 1; 
-    	return "webview-id-"+counter;
+    	return "webview-id-"+counter+"-"+Math.round(Math.random()*1000000);
     }
 })();
 
