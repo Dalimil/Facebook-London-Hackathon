@@ -34,7 +34,7 @@ function node() {
 $(document).ready(function(){
 	initDimensions();
 
-	initRootView("https://facebook.com");
+	loadFromStorage();
 });
 
 function getViewIdFromCoordinates(mouseX, mouseY){
@@ -85,6 +85,7 @@ function initRootView(url){
 	root.data = {"url": url, "id": id};
 	createHtmlView(id, url);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Create a new view (open/add), 
@@ -93,6 +94,7 @@ function initRootView(url){
 function addNewView(viewId, url, horizontal, firstHalf){
 	if(root == null){
 		initRootView(url);
+		return;
 	}
 
 	var u = getNodeFromId(root, viewId);
@@ -117,6 +119,26 @@ function addNewView(viewId, url, horizontal, firstHalf){
 	}
 	createHtmlView(viewId, url);
 	updateCoordinates();
+	saveLayoutToStorage();
+}
+
+function addNewViewFromLauncher(url){
+	var mxArea = -1;
+	var value = null;
+	$.each(viewDims, function( index, val ) {
+		var area = val["width"]*val["height"];
+		if(area >= mxArea){
+			mxArea = area;
+			value = val;
+		}
+	});
+	if(value == null) return;
+	var horizontal = true;
+	var firstHalf = false;
+	if(value["width"]/value["height"] >= WIDTH/HEIGHT){
+		horizontal = false;
+	}
+	addNewView(value["id"], url, horizontal, firstHalf);
 }
 
 function moveView(newViewId, oldObject, horizontal, firstHalf) {
@@ -153,12 +175,33 @@ function moveView(newViewId, oldObject, horizontal, firstHalf) {
 
 function createHtmlView(viewId, url){
 	var webViewObject = new WebViewElement(url, viewId);
+	webViewObject.webViewElement.addEventListener('contentload', function() {
+	  	// update our saved url
+	  	var id = $(webViewObject.domElement).attr("id");
+	  	var u = getNodeFromId(root, id);
+		if(u != null){
+			u.data["url"] = $(webViewObject.webViewElement).attr('src');
+			console.log(u.data["url"]);
+			saveLayoutToStorage();
+		}
+	});
 
     webViewsStore[viewId] = webViewObject;
 
 	var webViewHtml = webViewObject.getHtml();
+	
 	$("#views").append(webViewHtml);
 	setupForDrop(webViewHtml, webViewObject);
+}
+
+function createAllHtmlViews(u){
+	if(u.type == "leaf") {
+		createHtmlView(u.data["id"], u.data["url"]);
+		return;
+	} else {
+		createAllHtmlViews(u.first["ref"]);
+		createAllHtmlViews(u.second["ref"]);
+	}
 }
 
 function removeHtmlView(viewId){
@@ -225,12 +268,14 @@ function removeView(viewId) {
     webViewsStore[viewId] = null;
 	removeHtmlView(viewId);
 	updateCoordinates();
+	saveLayoutToStorage();
 }
 
 /** Used by background.js - resets all windows to default sizes */
 function resetLayout(){
 	initDimensions();
 	// TODO
+	saveLayoutToStorage();
 }
 
 function clearAll(){
@@ -241,12 +286,22 @@ function clearAll(){
 }
 
 function saveLayoutToStorage(){
-	JSON.stringify(root);
+	chrome.runtime.sendMessage({"message": "save_storage", "data": JSON.stringify(root)});	
 }
 
 function loadFromStorage(){
-	s = ""
-	root = JSON.parse(s);
+	chrome.runtime.sendMessage({"message": "load_storage"});	
+}
+
+function loadFromStorageCallback(data){
+	console.log("Loaded: "+data);
+	if(data == null){
+		initRootView("https://google.com");
+	} else{
+		root = JSON.parse(data);
+		createAllHtmlViews(root);
+		updateCoordinates();
+	}
 }
 
 function debug(){
