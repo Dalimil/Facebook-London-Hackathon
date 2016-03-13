@@ -5,9 +5,10 @@ var extensionId = "jjkdinonnkgnnapdocolkjfnabepfkmj";
 chrome.browserAction.onClicked.addListener(function(tab) {
 	chrome.windows.getCurrent({"populate":true}, function(win){
 		var urls = [];
-		for(var i=0;i<win.tabs;i++){
+		for(var i=0;i<win.tabs.length;i++){
 			urls.push(win.tabs[i].url);
 		}
+		// console.log(urls);
 		chrome.runtime.sendMessage(extensionId, {'message': 'browser_tabs', 'tabs': urls});
 		setTimeout(function(){chrome.windows.remove(win.id);}, 300);
 	});
