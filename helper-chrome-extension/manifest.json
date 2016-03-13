@@ -1,22 +1,20 @@
 {
 	"manifest_version": 2,
-
 	"name": "Helper extension for Mozaic",
 	"description": "This extension allows you to move all your browser tabs to Mozaic with one click.",
 	"version": "0.1",
-
 	"browser_action": {
-		"default_icon": "images/icon.png",
+		"default_icon": "images/logo_38.png",
 		"default_title": "Move to Mozaic"
 	},
-
 	"permissions": [
-		"activeTab", "tabs"
+		"activeTab",
+		"tabs"
 	],
-
-	"background": { /* Run in the background */
-		"scripts": ["background.js"],
+	"background": {
+		"scripts": [
+			"background.js"
+		],
 		"persistent": true
 	}
-
 }
