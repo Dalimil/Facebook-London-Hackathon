@@ -6,6 +6,7 @@ Mosaic offers an innovative way of browsing the internet using multiple web page
 
 ### Avaliable on the Google Chrome Store
 [Mosaic](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+
 [Mosaic helper extension](https://chrome.google.com/webstore/detail/helper-extension-for-mosa/nnhknchgeoeghedkfolliaihjghiijih)
 
 ### Notes
