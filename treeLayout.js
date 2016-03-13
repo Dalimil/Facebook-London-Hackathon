@@ -120,6 +120,25 @@ function addNewView(viewId, url, horizontal, firstHalf){
 	saveLayoutToStorage();
 }
 
+function addNewViewFromLauncher(url){
+	var mxArea = -1;
+	var value = null;
+	$.each(viewDims, function( index, val ) {
+		var area = val["width"]*val["height"];
+		if(area >= mxArea){
+			mxArea = area;
+			value = val;
+		}
+	});
+	if(value == null) return;
+	var horizontal = true;
+	var firstHalf = false;
+	if(value["width"]/value["height"] >= WIDTH/HEIGHT){
+		horizontal = false;
+	}
+	addNewView(value["id"], url, horizontal, firstHalf);
+}
+
 function createHtmlView(viewId, url){
 	var webViewObject = new WebViewElement(url, viewId);
 	webViewObject.webViewElement.addEventListener('contentload', function() {
