@@ -30,7 +30,7 @@ function LeftColumn() {
     });
 
     _this.buttons.facebookButton.click(function () {
-        addNewViewFromLauncher("https://google.com");
+        addNewViewFromLauncher("https://facebook.com");
     });
 
     _this.buttons.redditButton.click(function () {
