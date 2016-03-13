@@ -354,10 +354,51 @@ function removeView(viewId) {
 	saveLayoutToStorage();
 }
 
+function collectNodesBeforeReset(u){
+	if(u.type == "leaf"){
+		return [u.data];
+	}
+	var p1 = collectNodesBeforeReset(u.first["ref"]);
+	var p2 = collectNodesBeforeReset(u.second["ref"]);
+	var res = p1.concat(p2);
+	return res;
+}
+
 /** Used by background.js - resets all windows to default sizes */
 function resetLayout(){
+	if(root == null) return;
 	initDimensions();
-	// TODO
+	var nodes = collectNodesBeforeReset(root);
+	var n = nodes.shift();
+	root = null;
+	root = new node();
+	root.data = n;
+
+	// BFS
+	var queue = [{"n":root, "dim":[WIDTH, HEIGHT]}];
+	while(nodes.length > 0 && queue.length > 0){
+		var p = queue.shift(); // pop
+		var w = p["dim"][0];
+		var h = p["dim"][1];
+		p = p["n"];
+		//todo
+		p.first = {"percent": 0.5, "ref": null};
+		p.first["ref"] = new node();
+		p.first["ref"].data = p.data;
+		p.data = null;
+		p.second["ref"] = new node();
+		p.second["ref"].data = nodes.shift();
+		if(w/h >= WIDTH/HEIGHT){
+			p.type = "vertical";
+			w /= 2;
+		}else{
+			p.type = "horizontal";
+			h /= 2;
+		}
+		queue.push({"n": p.first["ref"], "dim":[w, h]});
+		queue.push({"n": p.second["ref"], "dim":[w, h]});
+	}
+	updateCoordinates();
 	saveLayoutToStorage();
 }
 
