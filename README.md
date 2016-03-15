@@ -1,7 +1,7 @@
 # Mosaic - Chrome App
 ## Facebook London Hackathon (London, 12-13th March 2016)
 
-### We built [Mosaic - available on Google Chrome Store](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
+### [Mosaic in the Chrome Web Store](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
 
 **Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window view rather than many individual tabs.**
 
