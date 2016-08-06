@@ -3,7 +3,8 @@
 
 ### [Mosaic in the Chrome Web Store](https://chrome.google.com/webstore/detail/mosaic/jjkdinonnkgnnapdocolkjfnabepfkmj?hl=en-US&gl=GB)
 
-**Mosaic offers an innovative way of browsing the internet using multiple web pages in a single window view rather than many individual tabs.**
+**Chrome App that creates a fully customizable split-screen browser layout.**  
+Users can add, delete, resize and drag & drop webpage views. User session is stored in Google Cloud so that reopening the app always restores the last opened web pages.
 
 ![Mosaic Chrome App](https://github.com/Dalimil/Mosaic-Chrome-App/blob/master/Screenshot-Mosaic.jpg)
 
